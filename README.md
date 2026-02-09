@@ -1,2 +1,0 @@
-# love
-i love uuu
