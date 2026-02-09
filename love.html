@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>forr azaaa 💗</title>
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ff9ecf, #9ad0ff);
+    position: relative;
+}
+
+/* BACKGROUND LAYER */
+.bg-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+.bg-layer div {
+    position: absolute;
+    font-size: 40px;
+    opacity: 0.3;
+    animation: bgMove linear infinite;
+}
+.bg-layer .layer1 {
+    animation-duration: 120s;
+}
+.bg-layer .layer2 {
+    animation-duration: 90s;
+}
+.bg-layer .layer3 {
+    animation-duration: 60s;
+}
+@keyframes bgMove {
+    0% {
+        transform: translateX(-150px);
+    }
+    100% {
+        transform: translateX(100vw);
+    }
+}
+
+/* FLOATING HEARTS BACKGROUND */
+.floating-hearts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+.floating-hearts div {
+    position: absolute;
+    font-size: 20px;
+    opacity: 0.2;
+    animation: floatHearts 10s linear infinite;
+}
+@keyframes floatHearts {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.2;
+    }
+    90% {
+        opacity: 0.2;
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* ENVELOPE (SURAT) */
+.envelope {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 35px;
+    border-radius: 24px;
+    width: min(360px, 90vw);
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(255, 79, 154, 0.4);
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.8s ease;
+    cursor: pointer;
+    perspective: 1000px; /* Untuk efek 3D */
+}
+.envelope.show {
+    opacity: 1;
+    transform: scale(1);
+}
+.envelope:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(255, 79, 154, 0.6);
+}
+
+/* BAGIAN ATAS ENVELOPE (FLAP) */
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(255, 100, 200, 0.3));
+    border-radius: 24px 24px 0 0;
+    transform-origin: top center;
+    transition: transform 1s ease;
+    z-index: 1;
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%); /* Bentuk segitiga atas untuk flap */
+}
+.envelope.open .envelope-flap {
+    transform: rotateX(180deg) translateY(-20px); /* Buka flap ke belakang */
+}
+
+/* ISI ENVELOPE */
+.envelope-content {
+    position: relative;
+    z-index: 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 1s ease 0.5s; /* Delay agar flap buka dulu */
+}
+.envelope.open .envelope-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* SEGEL LOVE DI TENGAH SURAT */
+.seal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: #ff4f9a;
+    cursor: pointer;
+    z-index: 2;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(255, 79, 154, 0.5);
+}
+.seal p {
+    font-size: 14px;
+    margin: 10px 0 0 0;
+    color: #ff4f9a;
+    font-weight: bold;
+}
+.envelope.open .seal {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* EFEK GLOW SAAT SELESAI */
+.envelope.pinkGlow {
+    box-shadow: 0 0 50px rgba(255, 100, 200, 0.7), 0 0 80px rgba(255, 100, 200, 0.5) inset;
+    animation: glow 1.5s ease-in-out infinite alternate;
+}
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 25px rgba(255, 100, 200, 0.5), 0 0 40px rgba(255, 100, 200, 0.3) inset;
+    }
+    100% {
+        box-shadow: 0 0 60px rgba(255, 100, 200, 0.8), 0 0 90px rgba(255, 100, 200, 0.6) inset;
+    }
+}
+
+/* LOVE TEXT ANIMASI - DIPINDAHKAN KE LUAR ENVELOPE, DI ATAS, Z-INDEX TINGGI */
+.love-text {
+    position: absolute;
+    top: 20%; 
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px;
+    color: #ff4f9a;
+    opacity: 0; /* Tetap 0 di awal */
+    transition: opacity 1s ease; /* Tambahkan ini agar munculnya halus */
+    z-index: 20;
+    text-shadow: 0 0 10px rgba(255, 79, 154, 0.5);
+}
+@keyframes loveFade {
+    0%, 100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-10px);
+    }
+}
+
+h2 {
+    color: #ff4f9a;
+    margin-bottom: 6px;
+    text-shadow: 0 0 10px rgba(255, 79, 154, 0.3);
+    font-size: 1.5em;
+}
+p {
+    font-size: 14px;
+    color: #555;
+}
+
+#pesan {
+    margin-top: 20px;
+    font-size: 14px;
+    line-height: 1.7;
+    white-space: pre-line;
+    color: #444;
+    display: none;
+    position: relative;
+    text-shadow: 0 0 8px rgba(255, 79, 154, 0.4);
+    font-weight: 500;
+    min-height: 200px;
+}
+
+.cursor {
+    animation: blink 1s infinite;
+}
+@keyframes blink {
+    0%, 50% {
+        opacity: 1;
+    }
+    51%, 100% {
+        opacity: 0;
+    }
+}
+
+.signature {
+    margin-top: 16px;
+    font-style: italic;
+    color: #ff5fa2;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    text-shadow: 0 0 8px rgba(255, 95, 162, 0.3);
+}
+
+/* FOTO */
+.photos {
+    margin-top: 22px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.photos img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(0.7);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    pointer-events: auto;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+.photos img.show {
+    opacity: 1;
+    animation: floatSlow 6s ease-in-out infinite;
+}
+.photos img:hover {
+    animation: floatShake 0.8s ease-in-out infinite;
+}
+@keyframes floatSlow {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+    25% {
+        transform: translateY(-4px) scale(1.02);
+    }
+    50% {
+        transform: translateY(0) scale(1);
+    }
+    75% {
+        transform: translateY(4px) scale(1.02);
+    }
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}
+@keyframes floatShake {
+    0% {
+        transform: rotate(0deg) translateY(0);
+    }
+    25% {
+        transform: rotate(3deg) translateY(-2px);
+    }
+    50% {
+        transform: rotate(-3deg) translateY(2px);
+    }
+    75% {
+        transform: rotate(3deg) translateY(-2px);
+    }
+    100% {
+        transform: rotate(-3deg) translateY(2px);
+    }
+}
+
+/* FALLING EMOJI & LOVE & BUNGA */
+.falling {
+    position: fixed;
+    top: -20px;
+    font-size: 22px;
+    animation: fallSlow linear forwards;
+    pointer-events: none;
+}
+@keyframes fallSlow {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    100% {
+        transform: translate(var(--x, 0px), 110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* SPARKLE */
+.sparkle {
+    position: fixed;
+    width: 5px;
+    height: 5px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: spark 2s ease-out forwards;
+}
+@keyframes spark {
+    to {
+        transform: translateY(-60px) scale(0);
+        opacity: 0;
+    }
+}
+
+/* CONFETTI */
+.confetti {
+    position: fixed;
+    font-size: 30px;
+    pointer-events: none;
+    animation: confettiFall 2s linear forwards;
+}
+@keyframes confettiFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* HEART EXPLOSION */
+.heart {
+    position: fixed;
+    font-size: 25px;
+    pointer-events: none;
+    animation: heartExplode 1.5s ease-out forwards;
+}
+@keyframes heartExplode {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5) translateY(-150px) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* BURST HEARTS FROM BOTTOM */
+.burst-hearts {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    opacity: 0;
+    animation: burstUp 2s ease-out forwards;
+    z-index: 3;
+}
+@keyframes burstUp {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-50px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-100px);
+    }
+}
+
+/* MUSIC CONTROL */
+.music-control {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 3;
+}
+.music-control:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+}
+.music-control i {
+    font-size: 18px;
+    color: #ff5fa2;
+}
+
+/* RESPONSIVE ADJUSTMENTS */
+@media (max-width: 480px) {
+    .envelope {
+        padding: 24px;
+        width: 95vw;
+    }
+    .photos img {
+        width: 60px;
+        height: 60px;
+    }
+    .falling {
+        font-size: 18px;
+    }
+    .confetti {
+        font-size: 24px;
+    }
+    .heart {
+        font-size: 20px;
+    }
+    .love-text {
+        font-size: 14px;
+    }
+    .seal {
+        font-size: 30px;
+    }
+    .seal p {
+        font-size: 12px;
+    }
+}
+
+/* UNTUK FOTO YANG DIPERBESAR SAAT DIKLIK */
+.photos img.enlarged {
+    width: 150px;
+    height: 150px;
+    z-index: 10;
+    position: relative;
+    transform: scale(1.5);
+    transition: all 0.3s ease;
+}
+
+/* PASTIKAN EFEK TIDAK OVERLAP */
+.sparkle {
+    pointer-events: none;
+}
+</style>
+<!-- Link to Font Awesome for music icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+<div class="bg-layer" id="bgLayer"></div>
+<div class="floating-hearts" id="floatingHearts"></div>
+
+<audio id="music" src="music.mp3" loop></audio>
+
+<!-- LOVE TEXT DIPINDAHKAN KE LUAR ENVELOPE -->
+<div class="love-text" id="loveText">i love uuuu azaaaaa 💖</div>
+
+<div class="envelope" id="envelope" onclick="bukaSurat()">
+    <div class="seal" id="seal">💖<br><p>Buka di sini</p></div>
+    <div class="envelope-flap" id="envelopeFlap"></div>
+    <div class="envelope-content" id="envelopeContent">
+        <h2>haiii cantikkkkkk 🤍</h2>
+        <p>adaa pesann kecil darii akuu hehee</p>
+        <div id="pesan"></div>
+        <div class="signature" id="signature">— darii akuu, yangg sekarangg milikk kamuu 💗</div>
+        <div class="photos">
+            <img src="foto-kiri.jpg" alt="Foto kiri" id="foto1">
+            <img src="foto-tengah.jpg" alt="Foto tengah" id="foto2">
+            <img src="foto-kanan.jpg" alt="Foto kanan" id="foto3">
+        </div>
+        <div class="burst-hearts" id="burstHearts">💗💖💕</div>
+    </div>
+</div>
+
+<!-- Music Control Button -->
+<div class="music-control" onclick="toggleMusic()" id="musicControl">
+    <i class="fas fa-play" id="musicIcon"></i>
+</div>
+
+<script>
+const teks = `makasiiii yaa…
+makasiiii bangett udaaa nerimaa akuuu dann perasaannn akuu.
+jujurrrr akuuuu bahagiaaaa passss kamuuu nerimaaa akuuuuu.
+makasiii yaaa karnaaa kamuuu udaaaa mauuu nerimaaa perasaaan akuuuuu dannn ngasihh akuuu kesempatannn buattt jadiii pacarrr kamuuu anjayyy pacarrrr.
+akuuu tauu kedepannyaa gaa selaluuu bakalll gampanggg,
+tapiii akuuu janjiii bakalll berusahaaa jadiii orangg yanggg bikinnn kamuu nyamann,
+bukann yangg nambahhhh bebannn.
+akuu mauuu jalann pelannn pelannn samaaa kamuuuu,
+salingg belajarrr,
+salinggg ngertii,
+dann salingg jagaa satuuu samaaa lainnn.
+makasiii karnaa udaaa percayaa amaaa akuuuu,
+im happyyy bisaaa samaaaa kamuuuu 🤍`;
+
+let i = 0;
+let isMusicPlaying = false;
+let isOpened = false; // Flag agar hanya sekali buka
+const envelope = document.getElementById("envelope");
+const envelopeFlap = document.getElementById("envelopeFlap");
+const envelopeContent = document.getElementById("envelopeContent");
+const seal = document.getElementById("seal");
+const music = document.getElementById("music");
+const pesan = document.getElementById("pesan");
+const signature = document.getElementById("signature");
+const bgLayer = document.getElementById("bgLayer");
+const floatingHearts = document.getElementById("floatingHearts");
+const loveText = document.getElementById("loveText");
+const burstHearts = document.getElementById("burstHearts");
+
+// BACKGROUND EMOJI
+const bgEmojis = ["☁️", "💗", "🌷", "🌸", "💫","💐", "🌹"];
+for (let j = 0; j < 40; j++) {
+    const e = document.createElement("div");
+    e.innerHTML = bgEmojis[Math.floor(Math.random() * bgEmojis.length)];
+    e.style.top = Math.random() * 90 + "vh";
+    e.style.left = Math.random() * 100 + "vw";
+    e.className = "layer" + ((j % 3) + 1);
+    bgLayer.appendChild(e);
+}
+
+// FLOATING HEARTS BACKGROUND
+for (let j = 0; j < 20; j++) {
+    const h = document.createElement("div");
+    h.innerHTML = "💐";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.animationDelay = Math.random() * 10 + "s";
+    floatingHearts.appendChild(h);
+}
+
+// TAMPILKAN ENVELOPE
+window.onload = () => {
+    envelope.classList.add("show");
+    // Baris loveText.style.opacity = 1; DIHAPUS agar tidak muncul duluan
+};
+
+// BUKA SURAT DAN MULAI NGETIK
+function bukaSurat() {
+    if (isOpened) return; 
+    isOpened = true;
+    envelope.classList.add("open");
+    seal.style.opacity = 0; 
+    seal.style.pointerEvents = "none";
+    
+    // TAMBAHKAN BARIS INI:
+    loveText.style.opacity = 1; 
+    loveText.style.animation = "loveFade 2s ease-in-out infinite";
+    
+    mulaiNgetik();
+}
+// MULAI NGETIK
+function mulaiNgetik() {
+    pesan.style.display = "block";
+    music.play();
+    isMusicPlaying = true;
+    updateMusicIcon();
+    const typing = setInterval(() => {
+        pesan.innerHTML = teks.substring(0, i) + "<span class='cursor'>|</span>";
+        i++;
+        if (i > teks.length) {
+            clearInterval(typing);
+            pesan.innerHTML = teks;
+            selesai();
+        }
+    }, 40);
+}
+
+// SELESAI
+function selesai() {
+    signature.style.opacity = 1;
+    burstHearts.style.opacity = 1; // Burst hearts from bottom
+    const fotos = [document.getElementById("foto1"), document.getElementById("foto2"), document.getElementById("foto3")];
+    fotos.forEach((f, idx) => setTimeout(() => f.classList.add("show"), 400 + 500 * idx));
+    envelope.classList.add("pinkGlow"); // Tambahkan efek glow pink saat selesai
+
+    // Tambahkan efek jatuh emoji, confetti, dan hati saat selesai
+    setTimeout(() => {
+        createFallingEmojis();
+        createConfetti();
+        createHeartExplosion();
+    }, 1000);
+}
+
+// Fungsi untuk toggle musik
+function toggleMusic() {
+    if (isMusicPlaying) {
+        music.pause();
+        isMusicPlaying = false;
+    } else {
+        music.play();
+        isMusicPlaying = true;
+    }
+    updateMusicIcon();
+}
+
+// Update ikon musik
+function updateMusicIcon() {
+    const icon = document.getElementById("musicIcon");
+    icon.className = isMusicPlaying ? "fas fa-pause" : "fas fa-play";
+}
+
+// Fungsi untuk membuat emoji jatuh (love, bunga, dll.)
+function createFallingEmojis() {
+    const emojis = ["💖", "🌸", "💕", "🌹", "💗", "🌷","💐"];
+    for (let j = 0; j < 15; j++) {
+        const e = document.createElement("div");
+        e.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+        e.className = "falling";
+        e.style.left = Math.random() * 100 + "vw";
+        e.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        e.style.setProperty('--x', (Math.random() - 0.5) * 200 + 'px');
+        document.body.appendChild(e);
+        setTimeout(() => e.remove(), 5000);
+    }
+}
+
+// Fungsi untuk membuat confetti
+function createConfetti() {
+    const confettiEmojis = ["🎉", "✨", "💫", "🌟"];
+    for (let j = 0; j < 20; j++) {
+        const c = document.createElement("div");
+        c.innerHTML = confettiEmojis[Math.floor(Math.random() * confettiEmojis.length)];
+        c.className = "confetti";
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.animationDuration = (Math.random() * 2 + 1) + "s";
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 3000);
+    }
+}
+
+// Fungsi untuk ledakan hati
+function createHeartExplosion() {
+    for (let j = 0; j < 10; j++) {
+        const h = document.createElement("div");
+        h.innerHTML = "💖";
+        h.className = "heart";
+        h.style.left = (Math.random() * 100) + "vw";
+        h.style.top = "80vh";
+        h.style.animationDelay = Math.random() * 0.5 + "s";
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 2000);
+    }
+}
+
+// Tambahkan interaktivitas: klik pada foto untuk memperbesar
+document.querySelectorAll('.photos img').forEach(img => {
+    img.addEventListener('click', () => {
+        img.classList.toggle('enlarged');
+    });
+});
+
+// Tambahkan efek sparkle saat hover pada envelope
+envelope.addEventListener('mouseenter', () => {
+    for (let j = 0; j < 5; j++) {
+        const s = document.createElement("div");
+        s.className = "sparkle";
+        s.style.left = (Math.random() * 100) + "%";
+        s.style.top = (Math.random() * 100) + "%";
+        envelope.appendChild(s);
+        setTimeout(() => s.remove(), 2000);
+    }
+});
+
+// Tambahkan animasi love text yang lebih dinamis
+setInterval(() => {
+    loveText.style.transform = `translateX(-50%) translateY(${Math.sin(Date.now() / 1000) * 5}px)`;
+}, 50);
+</script>
+</body>
+</html>
