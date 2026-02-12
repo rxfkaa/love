@@ -11,8 +11,10 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    align-items: flex-start; /* biar konten mulai dari atas */
+    overflow-y: auto;        /* AKTIFKAN SCROLL */
+    overflow-x: hidden;
+    padding: 40px 0;         /* jarak atas bawah */
     background: linear-gradient(135deg, #ff9ecf, #9ad0ff);
     position: relative;
 }
@@ -113,6 +115,8 @@ body {
     transition: all 0.8s ease;
     cursor: pointer;
     perspective: 1000px;
+    margin: auto;
+    max-height: none;
 }
 .envelope.show { opacity: 1; transform: scale(1); }
 .envelope:hover { transform: scale(1.05); box-shadow: 0 15px 40px rgba(255, 79, 154, 0.6); }
@@ -335,7 +339,10 @@ p { font-size: 14px; color: #555; }
     50% { opacity: 1; transform: translateX(-50%) translateY(-50px); }
     100% { opacity: 0; transform: translateX(-50%) translateY(-100px); }
 }
-
+.seal {
+    pointer-events: auto;
+    z-index: 5;
+}
 .music-control {
     position: absolute;
     top: 20px; right: 20px;
@@ -377,6 +384,16 @@ p { font-size: 14px; color: #555; }
     z-index: 5;
     animation: none;
 }
+    
+    #pesan {
+    max-height: 55vh;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+    
+    * {
+    -webkit-tap-highlight-color: transparent;
+}
 
 .photos img {
     transition: transform 0.4s ease, box-shadow 0.4s ease;
@@ -395,10 +412,9 @@ p { font-size: 14px; color: #555; }
 <div class="floating-hearts" id="floatingHearts"></div>
 
 <audio id="music" src="music.mp3" loop></audio>
-
-<div class="envelope" id="envelope" onclick="bukaSurat()">
+<div class="envelope" id="envelope">
     <!-- LOVE TEXT DI ATAS SURAT -->
-    <div class="love-text" id="loveText">i love uuuu azaaaaa 💖</div>
+    <div class="love-text" id="loveText">i alwasyy love uuuu azaaaaa 💖</div>
     
     <div class="seal" id="seal">💖<br><p>Buka di sini</p></div>
     <div class="envelope-flap" id="envelopeFlap"></div>
@@ -406,7 +422,7 @@ p { font-size: 14px; color: #555; }
         <h2>haiii cantikkkkkk 🤍</h2>
         <p>adaa pesann kecil darii akuu hehee</p>
         <div id="pesan"></div>
-        <div class="signature" id="signature">— darii akuu, yangg sekarangg milikk kamuu 💗</div>
+        <div class="signature" id="signature">— by akaaa forr azaaaaa💗</div>
         <div class="photos">
             <img src="foto-kiri.jpg" alt="Foto kiri" id="foto1">
             <img src="foto-tengah.jpg" alt="Foto tengah" id="foto2">
@@ -470,6 +486,18 @@ for (let j = 0; j < 40; j++) {
     bgLayer.appendChild(e);
 }
 
+   let lastTouchTime = 0;
+
+seal.addEventListener("click", (e) => {
+    e.stopPropagation();
+    bukaSurat();
+});
+
+seal.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    bukaSurat();
+});
 // FLOATING HEARTS
 for (let j = 0; j < 20; j++) {
     const h = document.createElement("div");
